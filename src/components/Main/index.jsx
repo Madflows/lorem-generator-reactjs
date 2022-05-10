@@ -3,15 +3,17 @@ import { useState, useEffect } from 'react';
 import { HiOutlineClipboardList } from 'react-icons/hi';
 import axios from 'axios';
 import useClipboard from 'react-use-clipboard';
+import { Markup } from 'interweave';
+import toast from 'react-hot-toast';
 
 const Main = () => {
-  const [query, setQuery] = useState(2);
+  const [query, setQuery] = useState(1);
   const [lorem, setLorem] = useState('Output Here');
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
       .get(
-        `https://baconipsum.com/api/?type=all-meat&paras=${query}&start-with-lorem=1&format=text`
+        `https://baconipsum.com/api/?type=all-meat&paras=${query}&start-with-lorem=1&format=html`
       )
       .then((res) => setLorem(res.data))
       .catch((err) => console.log(err));
@@ -36,7 +38,9 @@ const Main = () => {
           setQuery={setQuery}
           submitHandler={handleSubmit}
         />
-        <OutputSection>{lorem}</OutputSection>
+        <OutputSection lorem={lorem}>
+        <Markup content={lorem} />
+        </OutputSection>
       </div>
     </div>
   );
@@ -65,21 +69,24 @@ function FormSection({ query, setQuery, submitHandler }) {
       <input
         type="submit"
         value="Generate"
-        className="bg-slate-900 px-4 cursor-pointer text-white py-2 rounded-md"
+        className="bg-slate-700 px-4 cursor-pointer text-white py-2 rounded-md transition transition-ease hover:bg-slate-900"
       />
     </form>
   );
 }
 
-function OutputSection(props) {
-  const [isCopied, setCopied] = useClipboard(props.children, {
-    // `isCopied` will go back to `false` after 1000ms.
-    successDuration: 1000,
-  });
+function OutputSection(props, {lorem}) {
+  const [isCopied, setCopied] = useClipboard(lorem);
+
+  {
+    isCopied ? (
+      toast.success('Copied!')
+    ) : null
+  }
 
   const copyClass = isCopied ? 'text-emerald-700' : null;
   return (
-    <div className="relative bg-white rounded-md py-4 px-6 prose prose-slate text-justify text-base mx-auto my-4 mt-8 max-w-[90vw] w-fit">
+    <div className="relative bg-white rounded-md py-4 px-6 prose prose-slate text-justify text-base mx-auto my-4 mt-8 max-w-[90vw] lg:max-w-[600px] transition shadow-slate-300 shadow-md w-fit">
       <button
         onClick={setCopied}
         className="absolute -top-7 bg-white rounded-t-md py-2 text-xl px-4 right-0 flex items-center justify-between z-20 transition"
