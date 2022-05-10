@@ -1,0 +1,28 @@
+{
+  "name": "lorem-generator",
+  "private": true,
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "autoprefixer": "^10.4.7",
+    "axios": "^0.27.2",
+    "postcss": "^8.4.13",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "react-icons": "^4.3.1",
+    "react-use-clipboard": "^1.0.8",
+    "tailwind-scrollbar-hide": "^1.1.7",
+    "tailwindcss": "^3.0.24"
+  },
+  "devDependencies": {
+    "@tailwindcss/typography": "^0.5.2",
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
+    "@vitejs/plugin-react": "^1.3.0",
+    "vite": "^2.9.7"
+  }
+}
