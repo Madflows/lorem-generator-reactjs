@@ -86,7 +86,7 @@ function OutputSection(props, {lorem}) {
 
   const copyClass = isCopied ? 'text-emerald-700' : null;
   return (
-    <div className="relative bg-white rounded-md py-4 px-6 prose prose-slate text-justify text-base mx-auto my-4 mt-8 max-w-[90vw] lg:max-w-[600px] transition shadow-slate-300 shadow-md w-fit">
+    <div className="relative bg-white rounded-md py-4 mb-8 px-6 prose prose-slate text-justify text-base mx-auto my-4 mt-8 max-w-[90vw] lg:max-w-[600px] transition shadow-slate-300 shadow-md w-fit">
       <button
         onClick={setCopied}
         className="absolute -top-7 bg-white rounded-t-md py-2 text-xl px-4 right-0 flex items-center justify-between z-20 transition"
