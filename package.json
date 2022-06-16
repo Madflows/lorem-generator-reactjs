@@ -18,7 +18,8 @@
     "react-icons": "^4.3.1",
     "react-use-clipboard": "^1.0.8",
     "tailwind-scrollbar-hide": "^1.1.7",
-    "tailwindcss": "^3.0.24"
+    "tailwindcss": "^3.0.24",
+    "use-clipboard-copy": "^0.2.0"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.2",

@@ -1,14 +1,17 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
-import { HiOutlineClipboardList } from 'react-icons/hi';
-import axios from 'axios';
-import useClipboard from 'react-use-clipboard';
-import { Markup } from 'interweave';
-import toast from 'react-hot-toast';
+import React from "react";
+import { useState, useEffect } from "react";
+import { HiOutlineClipboardList } from "react-icons/hi";
+import { BsFillBookmarkCheckFill } from "react-icons/bs"
+import axios from "axios";
+import { useClipboard } from "use-clipboard-copy";
+import { Markup } from "interweave";
+import toast from "react-hot-toast";
 
 const Main = () => {
   const [query, setQuery] = useState(1);
-  const [lorem, setLorem] = useState('Output Here');
+  const [lorem, setLorem] = useState("Loading...");
+  const [plain, setPlain] = useState("Loading...");
+  const clipboard = useClipboard({ copiedTimeout: 4750 });
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
@@ -17,7 +20,14 @@ const Main = () => {
       )
       .then((res) => setLorem(res.data))
       .catch((err) => console.log(err));
-    setQuery('');
+
+    axios
+      .get(
+        `https://baconipsum.com/api/?type=all-meat&paras=${query}&start-with-lorem=1&format=text`
+      )
+      .then((res) => setPlain(res.data))
+      .catch((err) => console.log(err));
+    setQuery("");
   };
 
   useEffect(() => {
@@ -27,7 +37,14 @@ const Main = () => {
       )
       .then((res) => setLorem(res.data))
       .catch((err) => console.log(err));
-    setQuery('');
+
+    axios
+      .get(
+        `https://baconipsum.com/api/?type=all-meat&paras=${query}&start-with-lorem=1&format=text`
+      )
+      .then((res) => setPlain(res.data))
+      .catch((err) => console.log(err));
+    setQuery("");
   }, []);
 
   return (
@@ -39,7 +56,29 @@ const Main = () => {
           submitHandler={handleSubmit}
         />
         <OutputSection lorem={lorem}>
-        <Markup content={lorem} />
+          {/* <input type="text" value="copy me " readOnly ref={clipboard.target} /> */}
+          <div className="relative flex flex-col">
+            <button
+              onClick={clipboard.copy}
+              className="absolute right-0 -top-14 align-self-right max-w-[7rem] bg-white rounded-t-md py-2 text-xl px-4 flex items-center justify-between z-20 transition"
+            >
+              {
+                clipboard.copied ? (
+                  <div className="flex gap-2 items-center justify-center">
+                  Copied
+                  <BsFillBookmarkCheckFill />
+                  </div>
+                ) : (
+                  <div className="flex gap-2 items-center justify-center">
+                    Copy
+                    <HiOutlineClipboardList />
+                  </div>
+                )
+              }
+            </button>
+            <Markup content={lorem} />
+          </div>
+          <input type="hidden" value={plain} readOnly ref={clipboard.target} />
         </OutputSection>
       </div>
     </div>
@@ -75,24 +114,9 @@ function FormSection({ query, setQuery, submitHandler }) {
   );
 }
 
-function OutputSection(props, {lorem}) {
-  const [isCopied, setCopied] = useClipboard(lorem);
-
-  {
-    isCopied ? (
-      toast.success('Copied!')
-    ) : null
-  }
-
-  const copyClass = isCopied ? 'text-emerald-700' : null;
+function OutputSection(props) {
   return (
     <div className="relative bg-white rounded-md py-4 mb-8 px-6 prose prose-slate text-justify text-base mx-auto my-4 mt-8 max-w-[90vw] lg:max-w-[600px] transition shadow-slate-300 shadow-md w-fit">
-      <button
-        onClick={setCopied}
-        className="absolute -top-7 bg-white rounded-t-md py-2 text-xl px-4 right-0 flex items-center justify-between z-20 transition"
-      >
-        <HiOutlineClipboardList className={copyClass} />
-      </button>
       {props.children}
     </div>
   );
